@@ -1,17 +1,27 @@
 [project]
 name = "content-based-filtering-model"
 version = "0.1.0"
-description = "Add your description here"
+description = "Sistemas de recomendación. Modelos basados en el contenido."
 readme = "README.md"
-authors = [
-    { name = "4lbxrtz", email = "4lbxrtz@gmail.com" }
-]
+authors = [{ name = "4lbxrtz", email = "4lbxrtz@gmail.com" }]
 requires-python = ">=3.13"
 dependencies = []
 
-[project.scripts]
-content-based-filtering-model = "content_based_filtering_model:main"
+[tool.uv]
+package = true
 
-[build-system]
-requires = ["uv_build>=0.9.1,<0.10.0"]
-build-backend = "uv_build"
+[tool.setuptools]
+package-dir = { "" = "src" }
+
+[project.scripts]
+content-based-filtering-model = "main:main"
+
+[tool.ruff.lint]
+extend-select = ["E", "W", "F", "I", "B", "C4", "UP", "D"]
+ignore = ["D203", "D213"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "numpy"
+
+[dependency-groups]
+dev = ["ruff>=0.14.2"]
