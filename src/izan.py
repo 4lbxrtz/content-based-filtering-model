@@ -17,10 +17,13 @@ def openDoc(documentName):
     exit(NameError)
 
 import re
-def getWords(docName):
-  with open(docName, "r", encoding="utf-8") as file:
-    text = file.read()
-  return re.findall(r'\b\w+\b', text.lower())
+def getWords(docNames):
+  words = []
+  for docName in docNames:
+    with open(docName, "r", encoding="utf-8") as file:
+      text = file.read()
+    words.extend(re.findall(r'\b\w+\b', text.lower())) #cambiar por append y corregir los metodos de abajo para que trabaje con lista de listas
+  return words
 
 def deleteStopWords(words, docName):
   with open(docName, "r", encoding="utf-8") as file:
@@ -38,6 +41,7 @@ def buildTable(docName, stopWordsDocName, lemDocName):
   words = getWords(docName)
   words = deleteStopWords(words, stopWordsDocName)
   words = lematiceWords(words, lemDocName)
+  #print(words)
   
 
 

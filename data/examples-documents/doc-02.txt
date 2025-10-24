@@ -1,0 +1,2 @@
+hello, we are here in the new document,
+This is only a test.
