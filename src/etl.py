@@ -1,8 +1,6 @@
 import json
 import re
 
-from airam import compute_tf_idf
-
 
 def getWords(docNames):
     docs = []
@@ -28,20 +26,3 @@ def lematiceWords(docs, lemFile):
     for doc in docs:
         doc["words"] = [lemat.get(w, w) for w in doc["words"]]
     return docs
-
-
-def buildTable(docNames, stopWordsFile, lemFile):
-    docs = getWords(docNames)
-    docs = deleteStopWords(docs, stopWordsFile)
-    docs = lematiceWords(docs, lemFile)
-
-    tfidf_list, idf = compute_tf_idf(docs)
-
-    # Example output
-    for i, doc in enumerate(docs):
-        print(f"\n📄 {doc['name']}")
-        print(
-            f"Top TF-IDF words: {sorted(tfidf_list[i].items(), key=lambda x: x[1], reverse=True)[:5]}"
-        )
-
-    return docs, tfidf_list, idf
