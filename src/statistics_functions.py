@@ -10,14 +10,6 @@ def compute_tf(docs):
         tf_list.append(tf)
     return tf_list
 
-def calculate_vector_lenght(list):
-    vector_lenght = 0
-    for element in list:
-        vector_lenght += element ** 2
-    return math.sqrt(vector_lenght)
-        
-    
-
 def compute_log_tf(tf_list):
     log_tf_list = []
     for tf_dict in tf_list:
@@ -29,6 +21,22 @@ def compute_log_tf(tf_list):
                 log_tf[term] = 1 + math.log10(freq)
         log_tf_list.append(log_tf)
     return log_tf_list
+
+def calculate_vector_lenght(tf_log):
+    vector_lenght = 0
+    for term, freq in tf_log.items():
+            vector_lenght += freq ** 2
+    return (math.sqrt(vector_lenght))
+
+def normalize_vector(tf_log):
+    normalized_list = []
+    for tf_dict in tf_log:
+        lenght = calculate_vector_lenght(tf_dict)
+        normalized_tf = {}
+        for term, freq in tf_dict.items():
+            normalized_tf[term] = freq / lenght
+        normalized_list.append(normalized_tf)
+    return normalized_list
         
 
 
@@ -49,8 +57,7 @@ def compute_tfidf(tf_list, idf):
         tfidf_list.append(tfidf)
     return tfidf_list
 
-def normalize_vector(non_normalized_vector, lenght):
-    return [w/lenght for w in non_normalized_vector]
+
     
 
 
