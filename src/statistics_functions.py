@@ -6,12 +6,7 @@ def compute_tf(docs):
     tf_list = []
     for doc in docs:
         counts = Counter(doc["words"])
-<<<<<<< Updated upstream
-        total = len(doc["words"])
-        tf = {w: counts[w] / total for w in counts}
-=======
         tf = {w: counts[w] for w in counts}
->>>>>>> Stashed changes
         tf_list.append(tf)
     return tf_list
 
