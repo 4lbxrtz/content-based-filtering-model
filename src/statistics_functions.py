@@ -1,14 +1,22 @@
 import math
 from collections import Counter
 
+def compute_all_words(docs):
+    total_words = set()
+    for doc in docs:
+        for word in doc['words']:
+            total_words.add(word)
+    return total_words
 
-def compute_tf(docs):
+def compute_tf(docs, word_set):
     tf_list = []
     for doc in docs:
-        counts = Counter(doc["words"])
-        tf = {w: counts[w] for w in counts}
-        tf_list.append(tf)
-    return tf_list
+        tf_dict = {w: 0.0 for w in word_set}
+        counts = Counter(doc['words'])
+        for word in counts:
+            tf_dict[word] = counts[word]
+        tf_list.append(tf_dict)
+    return tf_list  
 
 def compute_log_tf(tf_list):
     log_tf_list = []

@@ -1,5 +1,5 @@
 from etl import deleteStopWords, getWords, lematiceWords
-from statistics_functions import compute_tf, compute_idf, compute_tfidf, compute_log_tf, normalize_vector
+from statistics_functions import compute_tf, compute_idf, compute_tfidf, compute_log_tf,normalize_vector, compute_all_words
 
 
 def build_word_table(docs, tf_list, tf_log, normalized, idf, tfidf_list):
@@ -33,7 +33,8 @@ def buildTable(docNames, stopWordsFile, lemFile):
     docs = lematiceWords(docs, lemFile)
 
     # Calculations
-    tf_list = compute_tf(docs)
+    word_set = compute_all_words(docs)
+    tf_list = compute_tf(docs, word_set)
     tf_log = compute_log_tf(tf_list)
     normalized = normalize_vector(tf_log)
     idf = compute_idf(tf_list)
