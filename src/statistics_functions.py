@@ -5,8 +5,9 @@ from collections import Counter
 def compute_tf(docs):
     tf_list = []
     for doc in docs:
-        counts = Counter(doc["words"])
-        total = len(doc["words"])
+        words = doc.lower().split()
+        total = len(words)
+        counts = Counter(words)
         tf = {w: counts[w] / total for w in counts}
         tf_list.append(tf)
     return tf_list
@@ -16,6 +17,7 @@ def compute_idf(tf_list):
     N = len(tf_list)
     all_words = {w for tf in tf_list for w in tf.keys()}
     idf = {}
+    
     for word in all_words:
         df = sum(1 for tf in tf_list if word in tf)
         idf[word] = math.log(N / (1 + df))
