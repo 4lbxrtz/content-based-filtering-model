@@ -1,8 +1,8 @@
 from etl import deleteStopWords, getWords, lematiceWords
-from statistics_functions import compute_tf, compute_idf, compute_tfidf
+from statistics_functions import compute_tf, compute_idf, compute_tfidf, compute_log_tf
 
 
-def build_word_table(docs, tf_list, idf, tfidf_list):
+def build_word_table(docs, tf_list, tf_log, idf, tfidf_list):
     """
     Build one table per document:
     [{ "word": ..., "TF": ..., "IDF": ..., "TF-IDF": ... }, ...]
@@ -15,8 +15,10 @@ def build_word_table(docs, tf_list, idf, tfidf_list):
                 {
                     "word": word,
                     "TF": tf_list[i][word],
+                    "TF(log)": tf_log[i][word],
                     "IDF": idf.get(word, 0.0),
                     "TF-IDF": tfidf_list[i][word],
+                    
                 }
             )
         tables.append({"doc": doc["name"], "rows": rows})
@@ -31,19 +33,20 @@ def buildTable(docNames, stopWordsFile, lemFile):
 
     # Calculations
     tf_list = compute_tf(docs)
+    tf_log = compute_log_tf(tf_list)
     idf = compute_idf(tf_list)
     tfidf_list = compute_tfidf(tf_list, idf)
 
     # Tables
-    tables = build_word_table(docs, tf_list, idf, tfidf_list)
+    tables = build_word_table(docs, tf_list, tf_log, idf, tfidf_list)
 
     # Output
     for table in tables:
         print(f"\n📄 {table['doc']}")
-        print(f"{'WORD':<15}{'TF':<10}{'IDF':<10}{'TF-IDF':<10}")
+        print(f"{'WORD':<15}{'TF':<10}{'TF(log)':<10}{'IDF':<10}{'TF-IDF':<10}")
         for row in table["rows"]:
             print(
-                f"{row['word']:<15}{row['TF']:<10.4f}{row['IDF']:<10.4f}{row['TF-IDF']:<10.4f}"
+                f"{row['word']:<15}{row['TF']:<10.4f}{row['TF(log)']:<10.4f}{row['IDF']:<10.4f}{row['TF-IDF']:<10.4f}"
             )
 
     return tables
