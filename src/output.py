@@ -1,5 +1,13 @@
 from etl import deleteStopWords, getWords, lematiceWords
-from statistics_functions import compute_tf, compute_idf, compute_tfidf, compute_log_tf,normalize_vector, compute_all_words
+from statistics_functions import (
+    compute_tf,
+    compute_idf,
+    compute_tfidf,
+    compute_log_tf,
+    normalize_vector,
+    compute_all_words,
+)
+from tabulate import tabulate
 
 
 def build_word_table(docs, tf_list, tf_log, normalized, idf, tfidf_list):
@@ -19,7 +27,6 @@ def build_word_table(docs, tf_list, tf_log, normalized, idf, tfidf_list):
                     "Normalized": normalized[i][word],
                     "IDF": idf.get(word, 0.0),
                     "TF-IDF": tfidf_list[i][word],
-                    
                 }
             )
         tables.append({"doc": doc["name"], "rows": rows})
@@ -43,13 +50,21 @@ def buildTable(docNames, stopWordsFile, lemFile):
     # Tables
     tables = build_word_table(docs, tf_list, tf_log, normalized, idf, tfidf_list)
 
-    # Output
+    # Output with tabulate
     for table in tables:
         print(f"\n📄 {table['doc']}")
-        print(f"{'WORD':<15}{'TF':<10}{'TF(log)':<10}{'Normalized':<10}{'IDF':<10}{'TF-IDF':<10}")
-        for row in table["rows"]:
-            print(
-                f"{row['word']:<15}{row['TF']:<10.4f}{row['TF(log)']:<10.4f}{row['Normalized']:<10.4f}{row['IDF']:<10.4f}{row['TF-IDF']:<10.4f}"
-            )
+        headers = ["WORD", "TF", "TF(log)", "Normalized", "IDF", "TF-IDF"]
+        data = [
+            [
+                row["word"],
+                f"{row['TF']:.4f}",
+                f"{row['TF(log)']:.4f}",
+                f"{row['Normalized']:.4f}",
+                f"{row['IDF']:.4f}",
+                f"{row['TF-IDF']:.4f}",
+            ]
+            for row in table["rows"]
+        ]
+        print(tabulate(data, headers=headers, tablefmt="fancy_grid"))
 
     return tables

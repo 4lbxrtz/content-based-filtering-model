@@ -1,22 +1,25 @@
 import math
 from collections import Counter
 
+
 def compute_all_words(docs):
     total_words = set()
     for doc in docs:
-        for word in doc['words']:
+        for word in doc["words"]:
             total_words.add(word)
     return total_words
+
 
 def compute_tf(docs, word_set):
     tf_list = []
     for doc in docs:
         tf_dict = {w: 0.0 for w in word_set}
-        counts = Counter(doc['words'])
+        counts = Counter(doc["words"])
         for word in counts:
             tf_dict[word] = counts[word]
         tf_list.append(tf_dict)
-    return tf_list  
+    return tf_list
+
 
 def compute_log_tf(tf_list):
     log_tf_list = []
@@ -30,11 +33,13 @@ def compute_log_tf(tf_list):
         log_tf_list.append(log_tf)
     return log_tf_list
 
+
 def calculate_vector_lenght(tf_log):
     vector_lenght = 0
     for term, freq in tf_log.items():
-            vector_lenght += freq ** 2
-    return (math.sqrt(vector_lenght))
+        vector_lenght += freq**2
+    return math.sqrt(vector_lenght)
+
 
 def normalize_vector(tf_log):
     normalized_list = []
@@ -45,7 +50,6 @@ def normalize_vector(tf_log):
             normalized_tf[term] = freq / lenght
         normalized_list.append(normalized_tf)
     return normalized_list
-        
 
 
 def compute_idf(tf_list):
@@ -64,9 +68,6 @@ def compute_tfidf(tf_list, idf):
         tfidf = {w: tf[w] * idf[w] for w in tf}
         tfidf_list.append(tfidf)
     return tfidf_list
-
-
-    
 
 
 # print(calculate_vector_lenght([2.322, 2.38, 0, 1.3, 1.3]))
