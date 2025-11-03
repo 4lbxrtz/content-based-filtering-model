@@ -46,6 +46,11 @@ def normalize_vector(tf_log):
     for tf_dict in tf_log:
         lenght = calculate_vector_lenght(tf_dict)
         normalized_tf = {}
+        if lenght == 0:
+            for term in tf_dict:
+                normalized_tf[term] = 0.0
+            normalized_list.append(normalized_tf)
+            continue
         for term, freq in tf_dict.items():
             normalized_tf[term] = freq / lenght
         normalized_list.append(normalized_tf)
