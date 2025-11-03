@@ -23,6 +23,7 @@ def build_word_table(docs, tf_list, tf_log, normalized, idf, tfidf_list):
             rows.append(
                 {
                     "word": word,
+                    "first_index": next((w[1] for w in doc["words"] if w[0] == word), None),
                     "TF": tf_list[i][word],
                     "TF(log)": tf_log[i][word],
                     "Normalized": normalized[i][word],
@@ -69,10 +70,11 @@ def buildTable(docNames, stopWordsFile, lemFile):
     # Output with tabulate
     for table in tables:
         print(f"\n📄 {table['doc']}")
-        headers = ["WORD", "TF", "TF(log)", "Normalized", "IDF", "TF-IDF"]
+        headers = ["WORD","FIRST INDEX","TF", "TF(log)", "Normalized", "IDF", "TF-IDF"]
         data = [
             [
                 row["word"],
+                f"{row['first_index']}",
                 f"{row['TF']:.4f}",
                 f"{row['TF(log)']:.4f}",
                 f"{row['Normalized']:.4f}",
@@ -83,6 +85,7 @@ def buildTable(docNames, stopWordsFile, lemFile):
         ]
         print(tabulate(data, headers=headers, tablefmt="fancy_grid"))
 
-    display_cosine_table(docs, normalized)
+    if len(docs) > 1:
+        display_cosine_table(docs, normalized)
 
     return tables

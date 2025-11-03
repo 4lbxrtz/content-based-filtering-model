@@ -12,7 +12,6 @@ def getWords(docNames):
         docs.append({"name": docName, "words": words_with_index})
     return docs
 
-
 def deleteStopWords(docs, stopWordsFile):
     with open(stopWordsFile, encoding="utf-8") as file:
         stopWords = [line.strip() for line in file if line.strip()]
