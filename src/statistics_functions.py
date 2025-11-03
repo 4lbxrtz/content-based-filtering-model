@@ -51,6 +51,26 @@ def normalize_vector(tf_log):
         normalized_list.append(normalized_tf)
     return normalized_list
 
+def calculate_cosine(vec1, vec2):
+    cosine = 0
+    for word in vec1:
+        if word in vec2:
+            cosine += vec1[word] * vec2[word]
+    long1 = math.sqrt(sum(value * value for value in vec1.values()))
+    long2 = math.sqrt(sum(value * value for value in vec2.values()))
+    if long1 == 0 or long2 == 0:
+        return 0.0
+    return cosine / (long1 * long2)
+
+def compute_cosine(normalized_list):
+    result = {}
+    for i in range(len(normalized_list)):
+        for j in range(i + 1, len(normalized_list)):
+            key = f"{i} - {j}"
+            result[key] = calculate_cosine(normalized_list[i], normalized_list[j])
+    return result
+    
+
 
 def compute_idf(tf_list):
     N = len(tf_list)
@@ -68,8 +88,3 @@ def compute_tfidf(tf_list, idf):
         tfidf = {w: tf[w] * idf[w] for w in tf}
         tfidf_list.append(tfidf)
     return tfidf_list
-
-
-# print(calculate_vector_lenght([2.322, 2.38, 0, 1.3, 1.3]))
-# print(compute_log_tf([21, 24, 0, 2, 2]))
-# print(normalize_vector(compute_log_tf([21, 24, 0, 2, 2]), calculate_vector_lenght(compute_log_tf([21, 24, 0, 2, 2]))))
