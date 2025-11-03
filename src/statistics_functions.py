@@ -51,6 +51,7 @@ def normalize_vector(tf_log):
         normalized_list.append(normalized_tf)
     return normalized_list
 
+
 def calculate_cosine(vec1, vec2):
     cosine = 0
     for word in vec1:
@@ -62,6 +63,7 @@ def calculate_cosine(vec1, vec2):
         return 0.0
     return cosine / (long1 * long2)
 
+
 def compute_cosine(normalized_list):
     result = {}
     for i in range(len(normalized_list)):
@@ -69,7 +71,6 @@ def compute_cosine(normalized_list):
             key = f"{i} - {j}"
             result[key] = calculate_cosine(normalized_list[i], normalized_list[j])
     return result
-    
 
 
 def compute_idf(tf_list):

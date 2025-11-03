@@ -1,12 +1,12 @@
 import math
-from collections import Counter  
+from collections import Counter
 
 with open("./data/stop-words/stop-words-en.txt", "r", encoding="utf-8") as file:
     stops = file.read()
 with open("./data/examples-documents/document-01.txt", "r", encoding="utf-8") as file:
     content = file.read()
 
-docs = []   # Set of files
+docs = []  # Set of files
 docs.append(content)  # Simulate the real document collection
 tf_list = []
 
@@ -32,10 +32,7 @@ for word in all_words:
     for tf in tf_list:
         if word in tf:
             df += 1
-    idf[word] = math.log(N /1 + df)
-print (idf)
+    idf[word] = math.log(N / 1 + df)
+print(idf)
 
 # Calculate TF-IDF
-
-    
-        

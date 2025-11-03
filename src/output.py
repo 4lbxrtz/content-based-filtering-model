@@ -1,5 +1,6 @@
 from etl import deleteStopWords, getWords, lematiceWords
 from statistics_functions import (
+    compute_cosine,
     compute_tf,
     compute_idf,
     compute_tfidf,
@@ -31,6 +32,21 @@ def build_word_table(docs, tf_list, tf_log, normalized, idf, tfidf_list):
             )
         tables.append({"doc": doc["name"], "rows": rows})
     return tables
+
+
+def display_cosine_table(docs, normalized_list):
+    cosine_results = compute_cosine(normalized_list)
+    headers = ["Par de Documentos", "Similitud Coseno"]
+    data = [
+        [
+            f"{docs[int(pair.split(' - ')[0])]['name']} ↔ {docs[int(pair.split(' - ')[1])]['name']}",
+            f"{value:.4f}",
+        ]
+        for pair, value in cosine_results.items()
+    ]
+
+    print("\n📊 Similitud Coseno entre Documentos")
+    print(tabulate(data, headers=headers, tablefmt="fancy_grid"))
 
 
 def buildTable(docNames, stopWordsFile, lemFile):
@@ -66,5 +82,7 @@ def buildTable(docNames, stopWordsFile, lemFile):
             for row in table["rows"]
         ]
         print(tabulate(data, headers=headers, tablefmt="fancy_grid"))
+
+    display_cosine_table(docs, normalized)
 
     return tables
