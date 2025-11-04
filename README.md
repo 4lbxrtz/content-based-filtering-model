@@ -17,7 +17,7 @@ Su objetivo es identificar qué documentos comparten más contenido o temas en c
 │   │   ├── new-documents/       # Nuevos documentos para probar
 │   │   └── original-documents/  # Documentos base originales
 │   └── stop-words/              # Ficheros de stop words en distintos idiomas
-├── docs/                        # Documentación y enunciado del proyecto
+├── docs/                        # Transparencias, enunciado del proyecto e informe final
 ├── pyproject.toml               # Configuración del proyecto y dependencias
 ├── README.md
 ├── src/                         # Código fuente
@@ -105,14 +105,6 @@ Usando el entrypoint definido en `pyproject.toml`:
 uv run content-based-filtering -d data/examples-documents/original-documents/*.txt -s data/stop-words/stop-words-es.txt -l data/corpus/corpus-es.json
 ```
 
-O ejecutando directamente el script principal:
-
-```bash
-uv run src/main.py -d data/examples-documents/original-documents/*.txt -s data/stop-words/stop-words-es.txt -l data/corpus/corpus-es.json
-```
-
----
-
 ## Opciones de ejecución
 
 ```bash
@@ -145,14 +137,34 @@ usage: main.py [-h] -d DOCUMENTS [DOCUMENTS ...] -s STOPWORDS -l LEMMATIZATION
 Para cada documento procesado, el sistema mostrará una tabla con las ponderaciones calculadas:
 
 ```fish
-📄 document-01.txt
-╒════════════════╤══════════╤══════════╤═════════════╤══════════╤══════════╕
-│ WORD           │ TF       │ TF(log)  │ Normalized  │ IDF      │ TF-IDF   │
-╞════════════════╪══════════╪══════════╪═════════════╪══════════╪══════════╡
-│ cervantes      │ 0.0833   │ 0.3010   │ 0.2505      │ 1.2346   │ 0.1028   │
-│ quijote        │ 0.1667   │ 0.4771   │ 0.3969      │ 1.0986   │ 0.1833   │
-│ molino         │ 0.0833   │ 0.3010   │ 0.2505      │ 1.7918   │ 0.1572   │
-╘════════════════╧══════════╧══════════╧═════════════╧══════════╧══════════╛
+📄 data/examples-documents/original-documents/document-01.txt
+╒═══════════════╤═══════════════╤══════╤═══════════╤══════════════╤═════════╤══════════╕
+│ WORD          │ FIRST INDEX   │   TF │   TF(log) │   Normalized │     IDF │   TF-IDF │
+╞═══════════════╪═══════════════╪══════╪═══════════╪══════════════╪═════════╪══════════╡
+│ confidently   │ None          │    0 │    0      │       0      │ -0.4055 │  -0      │
+├───────────────┼───────────────┼──────┼───────────┼──────────────┼─────────┼──────────┤
+│ failure       │ None          │    0 │    0      │       0      │ -0.4055 │  -0      │
+├───────────────┼───────────────┼──────┼───────────┼──────────────┼─────────┼──────────┤
+│ vanished      │ None          │    0 │    0      │       0      │ -0.4055 │  -0      │
+╘═══════════════╧═══════════════╧══════╧═══════════╧══════════════╧═════════╧══════════╛
+
+📄 data/examples-documents/original-documents/document-02.txt
+╒═══════════════╤═══════════════╤══════╤═══════════╤══════════════╤═════════╤══════════╕
+│ WORD          │ FIRST INDEX   │   TF │   TF(log) │   Normalized │     IDF │   TF-IDF │
+╞═══════════════╪═══════════════╪══════╪═══════════╪══════════════╪═════════╪══════════╡
+│ notebook      │ 58            │    4 │  1.6021   │     0.09     │ -0.6931 │ -2.7726  │
+├───────────────┼───────────────┼──────┼───────────┼──────────────┼─────────┼──────────┤
+│ walk          │ 12            │    9 │  1.9542   │    0.1098    │ -0.6931 │ -6.2383  │
+├───────────────┼───────────────┼──────┼───────────┼──────────────┼─────────┼──────────┤
+│ lake          │ 15            │   13 │  2.1139   │    0.1187    │ -0.6931 │ -9.0109  │
+╘═══════════════╧═══════════════╧══════╧═══════════╧══════════════╧═════════╧══════════╛
+
+📊 Similitud Coseno entre Documentos
+╒═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╤════════════════════╕
+│ Par de Documentos                                                                                                       │   Similitud Coseno │
+╞═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╪════════════════════╡
+│ data/examples-documents/original-documents/document-02.txt ↔ data/examples-documents/original-documents/document-01.txt │              0.679 │
+╘═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╧════════════════════╛
 ```
 
 ---
